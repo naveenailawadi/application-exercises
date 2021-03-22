@@ -1,0 +1,133 @@
+---
+title: "Working with Numerical Data"
+output: github_document
+---
+
+```{r load-packages, include=FALSE}
+library(tidyverse)
+library(openintro)
+```
+
+### Check out the data!
+```{r data-variables}
+library(openintro)
+glimpse(loans_full_schema)
+```
+
+### Make a loans object
+```{r object}
+loans <- loans_full_schema %>%
+  select(loan_amount, interest_rate, term, grade, 
+         state, annual_income, homeownership, debt_to_income)
+glimpse(loans)
+```
+
+### Visualizing Distributions - Histogram
+```{r histogram}
+basic_histogram = ggplot(loans, aes(x = loan_amount)) + # add the data as an aesthetic
+  geom_histogram(binwidth = 5000)  # does a ton under the hood --> does frequency count
+
+basic_histogram
+```
+- can leave the histogram parameter blank for it to autochoose
+
+### Customizing Histograms
+```{r customized-histogram}
+basic_histogram + labs(
+    x = "Loan amount ($)",
+    y = "Frequency",
+    title = "Amounts of Lending Club loans"
+  )
+```
+
+## Make it look pretty!
+```{r pretty-histogram}
+pretty_histogram = ggplot(loans, aes(x = loan_amount, 
+                  fill = homeownership)) +
+  geom_histogram(binwidth = 5000,
+                 alpha = 0.5) +
+  labs(
+    x = "Loan amount ($)",
+    y = "Frequency",
+    title = "Amounts of Lending Club loans"
+  )
+
+pretty_histogram
+```
+
+### Facets?
+```{r facet-histogram}
+pretty_histogram +
+  facet_wrap(~ homeownership, nrow = 3)
+```
+
+- this is usually a bit better for histograms
+
+### Density
+```{r density}
+density_plot = ggplot(loans, aes(x = loan_amount)) +
+  geom_density(adjust = 2)
+
+density_plot
+```
+
+### Add Some Labels
+```{r labeled-density}
+labeled_density_plot = density_plot + labs(
+    x = "Loan amount ($)",
+    y = "Density",
+    title = "Amounts of Lending Club loans"
+  )
+
+labeled_density_plot
+```
+
+### Add a categorical variable
+```{r categorical-density}
+ggplot(loans, aes(x = loan_amount, 
+                  fill = homeownership)) +
+  geom_density(adjust = 2, 
+               alpha = 0.5) +
+  labs(
+    x = "Loan amount ($)",
+    y = "Density",
+    title = "Amounts of Lending Club loans", 
+    fill = "Homeownership"
+  )
+```
+
+### Box Plots
+```{r boxplot}
+ggplot(loans, aes(x = interest_rate)) +
+  geom_boxplot()
+```
+
+### Custom Box Plots
+```{r custom-box-plots}
+ggplot(loans, aes(x = interest_rate,
+                  y = grade)) +
+  geom_boxplot() +
+  labs(
+    x = "Interest rate (%)",
+    y = "Grade",
+    title = "Interest rates of Lending Club loans",
+    subtitle = "by grade of loan"
+  )
+```
+
+
+### Bar Plots
+```{r bar-plot}
+basic_bar = ggplot(loans, aes(x = homeownership)) +
+  geom_bar() # sorting categorical data
+
+basic_bar
+```
+
+### Segmented Bar Plots
+```{r segmented-bar-plot}
+ggplot(loans, aes(x = homeownership, # segments on x-axis
+                  fill = grade)) + # changes fill based on categorical variable grade
+  geom_bar()
+```
+- shows how many of each
