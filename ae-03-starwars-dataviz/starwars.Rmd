@@ -13,6 +13,8 @@ library(tidyverse)
 glimpse(starwars)
 ```
 
+- This allows you to see some of the variable values
+
 ### Modify the following plot to change the color of all points to `"pink"`.
 
 ```{r scatterplot}
@@ -20,18 +22,22 @@ ggplot(starwars,
        aes(x = height, y = mass, color = gender, size = birth_year)) +
   geom_point(color = "#30509C")
 ```
+- create a scatterplot
 
 ### Add labels for title, x and y axes, and size of points. Uncomment to see the effect.
 
 ```{r scatterplot-labels}
+# geom = geometry --> how the data is rendered
+# see ggplot2.tidyverse.org/reference/index.html
+
 ggplot(starwars, 
        aes(x = height, y = mass, color = gender, size = birth_year)) +
-  geom_point(color = "#30509C") +
+  geom_point(color = "#30509C") + 
   labs(
-    #title = "___",
-    #x = "___", 
-    #y = "___",
-    #___
+    title = "Mass vs. Height of Starwards Characters",
+    x = "Height (cm)", 
+    y = "Weight (kg)"
+    # *any additional variables*
     )
 ```
 
