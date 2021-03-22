@@ -1,0 +1,88 @@
+---
+title: "Visualizing Palmer Penguins (Exploratory Data Analysis)"
+output: github_document
+---
+
+```{r load-packages, include=FALSE}
+library(tidyverse)
+library(palmerpenguins)
+library(ggplot2)
+```
+
+# Palmer Penguins
+
+### Scatterplot
+
+``` {r scatterplot}
+penguin_plot = ggplot(data = penguins, # gives a blank canvas
+       mapping = aes(x = bill_depth_mm, # gives x variables (can be histogram)
+                     y = bill_length_mm, # makes y relationship
+                     colour = species)) + # specifies a color difference
+  geom_point() + # plots points
+  labs(title = "Bill depth and length", # adds a title
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill depth (mm)", y = "Bill length (mm)", # make column names logical
+       colour = "Species", # specify what to call the color legend
+       caption = "Source: Palmer Station LTER / palmerpenguins package") + # give some caption to make it professional
+  scale_colour_viridis_d()
+
+penguin_plot
+```
+
+- aes() - every visualization needs aesthetics (or else you can't see it)
+  - colour, shape, size, alpha (transparency)
+  - bar plot --> fill is different from color (color is outside, fill is inside)
+  - scatterplot --> color is intuitive
+  
+### Adding Shapes to the scatterplot
+``` {r shape-scatterplot}
+# use previous data
+shape_plot = 
+ggplot(penguins,
+       aes(x = bill_depth_mm, 
+           y = bill_length_mm,
+           colour = species,
+           shape = island)) +
+  geom_point() +
+  scale_colour_viridis_d()
+
+shape_plot
+```
+
+### Faceting
+```{r faceting}
+facet_plot = ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+  facet_grid(species ~ island)
+
+facet_plot
+```
+
+### Facet and Color
+```{r facet-color}
+ggplot(
+  penguins, 
+  aes(x = bill_depth_mm, 
+      y = bill_length_mm, 
+      color = island)) +
+  geom_point() +
+  facet_grid(species ~ sex) +
+  scale_color_viridis_d()
+```
+
+
+### Facet Wrap
+```{r facet-wrap}
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+  facet_wrap(~ species, ncol = 2)
+```
+- good for comparing trends in different variables
+- not overlaid anymore
+
+### 
+
+
+
+
+

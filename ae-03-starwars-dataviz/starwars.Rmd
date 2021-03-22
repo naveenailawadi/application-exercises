@@ -5,6 +5,8 @@ output: github_document
 
 ```{r load-packages, include=FALSE}
 library(tidyverse)
+library(palmerpenguins)
+library(ggplot2)
 ```
 
 ### Glimpse at the starwars data frame.
@@ -49,6 +51,7 @@ ggplot(starwars,
 ggplot(starwars, aes(___)) +
   geom___
 ```
+
 
 ### Pick a single numerical variable and make a histogram of it.
 
