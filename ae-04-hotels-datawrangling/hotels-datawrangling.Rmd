@@ -200,8 +200,12 @@ Calculate minimum, mean, median, and maximum average daily rate (`adr`) grouped 
 Which type of hotel is higher, on average?
 
 ```{r label-me-3}
-# add code here
-# pay attention to correctness and code style
+hotels %>% 
+  group_by(hotel) %>% 
+  summarize(min_adr = min(adr),
+            mean_adr = mean(adr),
+            median_adr = median(adr),
+            max_adr = max(adr))
 ```
 
 ### Exercise 8.
@@ -214,8 +218,9 @@ You can investigate the data in the viewer to locate these values, but preferabl
 **Hint:** For example, you can `filter` for the given `adr` amounts and `select` the relevant columns.
 
 ```{r label-me-4}
-# add code here
-# pay attention to correctness and code style
+hotels %>% 
+  filter(adr == 5400)
+  
 ```
 
 ## Data dictionary
