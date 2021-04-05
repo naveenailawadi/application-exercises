@@ -103,6 +103,33 @@ hotels %>%
   summarise(reservation_ct = n())
 ```
 
+#### Distinct & Arrange
+find all the distinct market segments (alphabetically with arrange)
+```{r distinct-market-segment}
+hotels %>% 
+  distinct(market_segment) %>% 
+  arrange(market_segment)
+```
+
+
+arrange by the type of hotel
+```{r distinct-hotel-market-segment}
+hotels %>% 
+  distinct(hotel, market_segment) %>% 
+  arrange(hotel, market_segment)
+```
+
+#### Counting Market Segments
+sort in descending order too!
+```{r count-market-segments}
+hotels %>%  
+  group_by(market_segment) %>% 
+  summarise(n()) %>% 
+  arrange(desc(n()))
+```
+
+**Note: order matters with arrange! (will arrange in order)
+
 ### Exercise 5.
 
 Create a frequency table of the number of `adults` in a booking.
@@ -114,9 +141,45 @@ Are there any surprising results?
 Your label should be short, informative, and shouldn't include spaces.
 It also shouldn't repeat a previous label, otherwise R Markdown will give you an error about repeated R chunk labels.
 
+```{r adult-frequency}
+hotels %>% 
+  count(adults, sort=TRUE)
+```
+
+
 ```{r label-me-1}
 # add code here
 # pay attention to correctness and code style
+```
+
+#### Mutating
+
+mutate it without any grouping
+```{r hotel-mutants}
+hotels %>% 
+  mutate(
+    little_ones = children + babies) %>%
+  count(hotel, little_ones) %>% 
+  mutate(prop = n/sum(n)) %>% 
+  arrange(desc(prop))
+```
+
+grouping by hotel can get more specific mutated data sorted by some type
+```{r hotel-mutants-by-group}
+hotels %>% 
+  group_by(hotel) %>% 
+  mutate(
+    little_ones = children + babies) %>%
+  count(hotel, little_ones) %>% 
+  mutate(prop = n/sum(n))
+```
+
+
+#### Create some summaries
+```{r adult-summary}
+hotels %>%
+  group_by(hotel) %>% 
+  summarize(mean_adults = mean(adults))
 ```
 
 ### Exercise 6.
