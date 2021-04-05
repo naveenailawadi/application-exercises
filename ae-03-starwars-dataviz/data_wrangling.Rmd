@@ -1,0 +1,21 @@
+---
+title: "Summarising Starwars characters"
+output: github_document
+---
+
+```{r load-packages, include=FALSE}
+library(tidyverse)
+```
+
+### Create a Tibble
+```{r basic data-tibble}
+starwars %>% 
+  select(name, height, mass)
+```
+
+### Create a grouped Tibble
+```{r basic grouped-tibble}
+starwars %>% 
+  group_by(gender) %>%
+  summarize(avg_ht = mean(height, na.rm=TRUE))
+```

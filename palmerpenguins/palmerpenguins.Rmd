@@ -80,9 +80,6 @@ ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) +
 - good for comparing trends in different variables
 - not overlaid anymore
 
-### 
-
-
 
 
 

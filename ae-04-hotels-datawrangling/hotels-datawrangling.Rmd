@@ -28,6 +28,10 @@ A definition of all variables is given in the [Data dictionary] section at the e
 skim(hotels)
 ```
 
+
+- n_missing shows number of null values
+- summary statistics output
+
 ### Exercise 2.
 
 Are people traveling on a whim?
@@ -40,9 +44,18 @@ Fill in the blanks for filtering for hotel bookings where the guest is **not** f
 ```{r travel-whim, eval=FALSE}
 hotels %>%
   filter(
-    country ____ "USA", 
-    lead_time ____ ____
+    country != "USA",
+    lead_time < 1
     )
+```
+
+
+#### What about multiple states?
+```{r multiple-states}
+countries = c("PRT", "GBR")
+
+hotels %>% 
+  filter(country %in% countries)
 ```
 
 ### Exercise 3.
@@ -59,7 +72,7 @@ In the following chunk, replace
 ```{r some-children, eval=FALSE}
 hotels %>%
   filter(
-    children [AT LEAST] 1 [OR] babies [AT LEAST] 1
+    children >= 1 | babies >= 1
     )
 ```
 
@@ -71,13 +84,23 @@ Using `filter()` determine the number of bookings in resort hotels that have mor
 Then, do the same for city hotels, and compare the numbers of rows in the resulting filtered data frames.
 
 ```{r resort-children}
-# add code here
-# pay attention to correctness and code style
+# create one group of hotels and another of 
+hotels %>% 
+  filter(hotel == "Resort Hotel", children >= 1 | babies >= 1)
 ```
 
 ```{r city-children}
-# add code here
-# pay attention to correctness and code style
+hotels %>% 
+  filter(hotel == "City Hotel", children >= 1 | babies >= 1)
+```
+
+
+do it combined!!!
+```{r resort-city-children}
+hotels %>% 
+  filter(children >= 1 | babies >= 1) %>% 
+  group_by(hotel) %>% 
+  summarise(reservation_ct = n())
 ```
 
 ### Exercise 5.
