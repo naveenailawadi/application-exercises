@@ -7,6 +7,8 @@ output: github_document
 ```{r load-pkg, message = FALSE}
 library(tidyverse)
 library(skimr)
+library(glue)
+library(lubridate)
 ```
 
 ```{r load-data, message = FALSE}
@@ -24,11 +26,18 @@ You will want to use a function from the **forcats** package, see <https://forca
 You will want to use a function from the **scales** package, see <https://scales.r-lib.org/reference/index.html> for inspiration and help.
 
 ```{r plot, fig.width=10}
+# set the correct order
+hotels = hotels %>%
+  mutate(custom_date_order = factor(arrival_date_month, 
+                              levels = c("January", "February", "March", "April", "June",
+                                         "July", "August", "September", "October", 
+                                         "November", "December")))
+
 hotels %>%
-  group_by(hotel, arrival_date_month) %>%   # group by hotel type and arrival month
+  group_by(hotel, custom_date_order) %>%   # group by hotel type and arrival month
   summarise(mean_adr = mean(adr)) %>%       # calculate mean adr for each group
   ggplot(aes(
-    x = arrival_date_month,                 # x-axis = arrival_date_month
+    x = custom_date_order,                 # x-axis = arrival_date_month (in alphabetical order due to factor status)
     y = mean_adr,                           # y-axis = mean_adr calculated above
     group = hotel,                          # group lines by hotel type
     color = hotel)                          # and color by hotel type
@@ -41,3 +50,14 @@ hotels %>%
        subtitle = "Resort hotel prices soar in the summer while ciry hotel prices remain relatively constant throughout the year",
        color = "Hotel type")
 ```
+
+
+
+Create a new field by putting together strings (but keep the date objects)
+```{r count-dates}
+hotels = hotels %>% 
+  mutate(arrival_date = ymd(glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}")))
+
+hotels
+```
+
