@@ -50,8 +50,7 @@ test_data  <- testing(data_split)
 
 # create the recipe
 flights_rec <- 
-  recipe(arr_delay ~ ., 
-         data = train_data) %>% 
+  recipe(arr_delay ~ .,  data = head(train_data, 100)) %>% 
   update_role(flight, 
               time_hour, 
               new_role = "ID") %>% 
@@ -65,8 +64,7 @@ flights_rec <-
   step_corr(all_predictors())
 
 # Perform the recipe with prep()
-flights_prep <- 
-  flights_rec %>% 
+flights_prep <- flights_rec %>% 
   prep() # creates new dataframe with values
 
 # Obtain data with juice()
@@ -75,3 +73,28 @@ df_flight_prep <- juice(flights_prep)
 # Save data as rds for future use
 write_rds(df_flight_prep, "df_flight_prep.rds", compress = "gz")
 
+# make different models
+# Logistic regression
+lr_mod <- 
+  logistic_reg() %>% 
+  set_engine("glm")
+
+# Decision tree
+dt_mod <- 
+  decision_tree() %>% 
+  set_engine("C5.0") %>% 
+  set_mode("classification")
+
+# Random forest
+rf_mod <- 
+  rand_forest() %>% 
+  set_engine("ranger") %>% 
+  set_mode("classification")
+
+#Boosted tree (XGBoost)
+#install.packages("xgboost")
+
+xgb_mod <- 
+  boost_tree() %>% 
+  set_engine("xgboost") %>% 
+  set_mode("classification") 
